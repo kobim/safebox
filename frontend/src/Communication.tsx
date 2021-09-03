@@ -117,8 +117,8 @@ const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange }) => {
   if (role === 'first') {
     return (
       <>
-        <div className="flex flex-row">
-          <div className="flex-1 pr-2 space-y-2 relative">
+        <div className="flex sm:flex-row flex-col">
+          <div className="pr-2 space-y-2 relative h-36 sm:h-auto sm:flex-1">
             <p>
               Data received from <span className="font-semibold">{exchange.second.name}</span>
             </p>
@@ -126,7 +126,7 @@ const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange }) => {
               This exchange is named <span className="font-semibold">{exchange.first.name}</span>
             </p>
             <p className="text-sm">You can only read data.</p>
-            <p className="text-sm absolute bottom-0">(refresh to check for updates)</p>
+            <p className="text-sm sm:absolute bottom-0">(refresh to check for updates)</p>
           </div>
           <div className="flex-1 flex flex-col">
             <textarea
@@ -143,20 +143,20 @@ const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange }) => {
 
   return (
     <>
-      <div className="flex flex-row">
-        <div className="flex-1 pr-2 space-y-2 relative">
+      <div className="flex sm:flex-row flex-col">
+        <div className="pr-2 space-y-2 relative h-36 sm:h-auto sm:flex-1">
           <p>
             Exchanging with <span className="font-semibold">{exchange.first.name}</span>
           </p>
           <p>
             Your name is <span className="font-semibold">{exchange.second.name}</span>
           </p>
-          <p className="text-sm absolute bottom-0 pr-2">
+          <p className="text-sm sm:absolute bottom-0 pr-2">
             You can write everything in the text box and it will be encrypted and sent once you click{' '}
             <span className="italic">Save</span>.
           </p>
         </div>
-        <div className="flex-1 flex flex-col justify-between">
+        <div className="flex-1 flex flex-col">
           <textarea
             onChange={e => setText(e.target.value)}
             value={text}
@@ -195,7 +195,7 @@ const Communication: React.FC<RouteComponentProps<Params>> = ({
   }, [uuid]);
 
   return (
-    <div className="bg-white mx-auto sm:shadow-md p-4 sm:max-w-2xl w-full h-full">
+    <div className="bg-white sm:mx-auto sm:shadow-md p-4 sm:max-w-2xl w-full h-full">
       <Window uuid={uuid} exchange={exchange} setExchange={setExchange} />
     </div>
   );

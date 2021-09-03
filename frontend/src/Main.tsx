@@ -10,7 +10,7 @@ interface Params {
 
 const Main: React.FC<Params> = ({ newExchange, destroy }) => (
   <div className="relative py-3 sm:w-full sm:max-w-4xl sm:mx-auto bg-white shadow overflow-hidden sm:rounded-lg flex flex-col sm:flex-row">
-    <div className="px-4 py-5 sm:px-6 w-60 flex flex-col justify-between h-96 text-center">
+    <div className="px-4 py-5 sm:px-6 sm:w-60 flex flex-col justify-between sm:h-96 text-center">
       <div className="">
         <button
           type="button"
@@ -21,7 +21,7 @@ const Main: React.FC<Params> = ({ newExchange, destroy }) => (
         </button>
         <p className="mt-2 text-sm text-gray-500">Generates a new unique link to be shared</p>
       </div>
-      <div className="">
+      <div className="mt-4 sm:mt-0">
         <button
           type="button"
           className="inline-flex items-center px-3 py-1 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
@@ -39,8 +39,8 @@ const Main: React.FC<Params> = ({ newExchange, destroy }) => (
         </p>
       </div>
     </div>
-    <div className="sm:border-l border-gray-200 px-4 py-5 sm:px-6 sm:flex flex-grow">
-      <div className="sm:w-1/2 mr-2">
+    <div className="sm:border-l border-gray-100 px-4 py-5 sm:px-6 sm:flex flex-grow border-t-8 sm:border-t-0">
+      <div className="sm:w-1/2 sm:mr-2">
         <List role="first" title="Exchanges created" />
       </div>
       <div className="sm:w-1/2 sm:mt-0 mt-4">

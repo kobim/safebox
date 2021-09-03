@@ -21,7 +21,7 @@ const ShareExchange: React.FC<Params> = ({ name }) => {
   return (
     <>
       <div className="flex sm:flex-row flex-col text-center">
-        <div className="mr-4 w-80">
+        <div className="sm:mr-4 sm:w-80">
           <p>Ask the other party to scan the QR code</p>
           <p>- or -</p>
           <p>share this URL with them</p>
@@ -31,7 +31,7 @@ const ShareExchange: React.FC<Params> = ({ name }) => {
             </button>
           </p>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 sm:mt-0 mt-4">
           <QRCode
             value={window.location.href}
             size={128}
@@ -50,7 +50,7 @@ const ShareExchange: React.FC<Params> = ({ name }) => {
           />
         </div>
       </div>
-      <p className="text-center mt-2 text-gray-500">They will be able to see should verify they reply to</p>
+      <p className="text-center sm:mt-2 mt-6 text-gray-500">They will be able to see should verify they reply to</p>
       <p className="text-center font-semibold">{name}</p>
     </>
   );
