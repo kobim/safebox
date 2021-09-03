@@ -1,8 +1,7 @@
 name = "safebox-api"
 type = "javascript"
 kv_namespaces = [
-  { binding = "MESSAGES", preview_id = "49eb9438c3a940278439bc9d0dfd5e85", id = "db1f20a3251a4efe9d95acfc2bf85656" },
-	{ binding = "USERS", preview_id = "8916c9dd709541c7a6190be67862f57f", id = "2d8f5745d60f4a26b23670ad9f47d2c8" }
+  { binding = "MESSAGES", preview_id = "49eb9438c3a940278439bc9d0dfd5e85", id = "db1f20a3251a4efe9d95acfc2bf85656" }
 ]
 zone_id = "da5e767f499758c8f050b3f4decfe23a"
 workers_dev = false

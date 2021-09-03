@@ -1,10 +1,5 @@
 export {};
 
-declare global {
-  const MESSAGES: KVNamespace;
-  const USERS: KVNamespace;
-}
-
 export type Subject = {
   key: JsonWebKey;
   name: string;
