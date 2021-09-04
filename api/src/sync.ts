@@ -55,7 +55,6 @@ export class Sync implements DurableObject {
   }
 
   async updateExchange(exchangeJson: string): Promise<void> {
-    console.log('this sessions', this.sessions);
     this.sessions = this.sessions.filter((session) => {
       try {
         session.ws.send(exchangeJson);

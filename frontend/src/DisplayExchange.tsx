@@ -1,6 +1,4 @@
-import React, { SetStateAction, useContext, useMemo } from 'react';
-
-import { LiveUpdatesContext } from './LiveUpdates';
+import React, { SetStateAction, useMemo } from 'react';
 
 import { Exchange, SubjectRole } from './bindings';
 
@@ -10,15 +8,14 @@ interface Params {
   text: string;
   setText: React.Dispatch<SetStateAction<string>>;
   submit: () => Promise<void>;
+  updatedLive: boolean;
 }
 
-const ExchangeDisplay: React.FC<Params> = ({ role, exchange, text, setText, submit }) => {
+const DisplayExchange: React.FC<Params> = ({ role, exchange, text, setText, submit, updatedLive }) => {
   const submitDisabled = useMemo<boolean>(
     () => text.length === 0 && exchange?.encMessage === undefined,
     [text, exchange]
   );
-
-  const { enabled: updatesEnabled } = useContext(LiveUpdatesContext);
 
   return role === 'first' ? (
     <>
@@ -32,7 +29,7 @@ const ExchangeDisplay: React.FC<Params> = ({ role, exchange, text, setText, subm
           </p>
           <p className="text-sm">You can only read data.</p>
           <p className="text-sm sm:absolute bottom-0">
-            ({updatesEnabled ? 'updated live' : 'refresh to check for updates'})
+            ({updatedLive ? 'updated live' : 'refresh to check for updates'})
           </p>
         </div>
         <div className="flex-1 flex flex-col">
@@ -82,4 +79,4 @@ const ExchangeDisplay: React.FC<Params> = ({ role, exchange, text, setText, subm
   );
 };
 
-export default ExchangeDisplay;
+export default DisplayExchange;

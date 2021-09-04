@@ -16,9 +16,10 @@ interface WindowParams {
   uuid: string;
   exchange: Exchange | null | undefined;
   setExchange: React.Dispatch<SetStateAction<Exchange | null | undefined>>;
+  updatedLive: boolean;
 }
 
-const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange }) => {
+const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange, updatedLive }) => {
   const [text, setText] = useState<string>('');
   const [role, setRole] = useState<SubjectRole | null | undefined>(undefined);
 
@@ -112,7 +113,16 @@ const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange }) => {
     return <ShareExchange name={exchange.first.name} />;
   }
 
-  return <DisplayExchange exchange={exchange} text={text} setText={setText} submit={submit} role={role} />;
+  return (
+    <DisplayExchange
+      exchange={exchange}
+      text={text}
+      setText={setText}
+      submit={submit}
+      role={role}
+      updatedLive={updatedLive}
+    />
+  );
 };
 
 interface Params {
@@ -135,7 +145,7 @@ const Communication: React.FC<RouteComponentProps<Params>> = ({
     return `${protocol}//${window.location.host}/api/m/${uuid}/ws`;
   }, [uuid, updatesEnabled]);
 
-  useWebSocket(updatesUrl, {
+  const ws = useWebSocket(updatesUrl, {
     onMessage: ({ data }) => setExchange(JSON.parse(data)),
   });
 
@@ -147,7 +157,12 @@ const Communication: React.FC<RouteComponentProps<Params>> = ({
 
   return (
     <div className="bg-white sm:mx-auto sm:shadow-md p-4 sm:max-w-2xl w-full h-full">
-      <Window uuid={uuid} exchange={exchange} setExchange={setExchange} />
+      <Window
+        uuid={uuid}
+        exchange={exchange}
+        setExchange={setExchange}
+        updatedLive={ws.readyState === WebSocket.OPEN}
+      />
     </div>
   );
 };
