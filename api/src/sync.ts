@@ -20,7 +20,6 @@ export class Sync implements DurableObject {
         return new Response('expected websocket', { status: 400 });
       }
 
-      // eslint-disable-next-line no-case-declarations
       const { 0: client, 1: server } = new WebSocketPair();
 
       await this.handleSession(server);
@@ -28,7 +27,6 @@ export class Sync implements DurableObject {
       return new Response(null, { status: 101, webSocket: client });
     }
 
-    // eslint-disable-next-line no-case-declarations
     const exchangeJson = await request.text();
 
     this.updateExchange(exchangeJson);

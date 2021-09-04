@@ -153,7 +153,7 @@ const Communication: React.FC<RouteComponentProps<Params>> = ({
     if (uuid) {
       getExchange(uuid).then(({ data }) => setExchange(data));
     }
-  }, [uuid]);
+  }, [uuid, updatesEnabled]); // also refresh when updates are toggled
 
   return (
     <div className="bg-white sm:mx-auto sm:shadow-md p-4 sm:max-w-2xl w-full h-full">
