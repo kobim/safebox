@@ -3,7 +3,7 @@
 A safe way to receive sensitive information from anyone on the web
 
 [![safebox.dev](https://img.shields.io/badge/Pages-safebox.dev-green?logo=cloudflare&color=13a821)](https://safebox.dev) &nbsp;
-![API deploy](https://github.com/kobim/safebox/actions/workflows/api-publish/badge.svg) &nbsp;
+[![API](https://github.com/kobim/safebox/actions/workflows/api-publish.yml/badge.svg)](https://github.com/kobim/safebox/actions/workflows/api-publish.yml) &nbsp;
 
 ## Products Used
 
