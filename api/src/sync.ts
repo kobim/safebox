@@ -15,24 +15,25 @@ export class Sync implements DurableObject {
 
   async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url);
+    if (url.pathname.endsWith('/ws')) {
+      if (request.headers.get('Upgrade') != 'websocket') {
+        return new Response('expected websocket', { status: 400 });
+      }
 
-    switch (url.pathname) {
-      case '/ws':
-        // eslint-disable-next-line no-case-declarations
-        const { 0: client, 1: server } = new WebSocketPair();
+      // eslint-disable-next-line no-case-declarations
+      const { 0: client, 1: server } = new WebSocketPair();
 
-        await this.handleSession(server);
+      await this.handleSession(server);
 
-        return new Response(null, { status: 101, webSocket: client });
-
-      default:
-        // eslint-disable-next-line no-case-declarations
-        const exchangeJson = await request.text();
-
-        this.updateExchange(exchangeJson);
-
-        return new Response(null, { status: 200 });
+      return new Response(null, { status: 101, webSocket: client });
     }
+
+    // eslint-disable-next-line no-case-declarations
+    const exchangeJson = await request.text();
+
+    this.updateExchange(exchangeJson);
+
+    return new Response(null, { status: 200 });
   }
 
   async handleSession(ws: WebSocket): Promise<void> {

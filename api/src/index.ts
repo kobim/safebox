@@ -135,14 +135,7 @@ router.get(
     const syncId = SYNCS.idFromName(uuid);
     const sync = await SYNCS.get(syncId);
 
-    if (request.headers.get('Upgrade') != 'websocket') {
-      return new Response('expected websocket', { status: 400 });
-    }
-
-    const updatesUrl = new URL(request.url);
-    updatesUrl.pathname = '/ws';
-
-    return await sync.fetch(updatesUrl.href);
+    return await sync.fetch(request);
   },
 );
 
