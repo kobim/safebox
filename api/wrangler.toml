@@ -11,7 +11,14 @@ route = "*safebox.dev/api/*"
 command = "yarn build"
 
 [build.upload]
-format = "service-worker"
+format = "modules"
+main = "index.mjs"
+
+[durable_objects]
+bindings = [
+  { name = "SYNCS", class_name = "Sync" }
+]
 
 [miniflare]
 kv_persist = true
+durable_objects_persist = true

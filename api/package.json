@@ -2,10 +2,12 @@
   "name": "safebox-api",
   "version": "1.0.0",
   "description": "A safe way to receive sensitive information from anyone on the web",
-  "main": "dist/index.js",
+  "main": "dist/index.mjs",
+  "type": "module",
+  "license": "MIT",
   "scripts": {
-    "build": "esbuild --bundle --sourcemap --outdir=dist ./src/index.js",
-    "start": "miniflare --watch --debug",
+    "build": "esbuild --bundle --sourcemap --outdir=dist --format=esm --out-extension:.js=.mjs ./src/index.js",
+    "start": "miniflare --watch --debug --do SYNCS=Sync",
     "format": "prettier --write  '*.{json,js}' 'src/**/*.{js,ts}'",
     "lint": "eslint --max-warnings=0 src && prettier --check '*.{json,js}' 'src/**/*.{js,ts}'"
   },

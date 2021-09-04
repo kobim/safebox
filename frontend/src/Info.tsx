@@ -6,7 +6,7 @@ import { LightBulbIcon } from '@heroicons/react/outline';
 const ALREADY_VISITED_KEY = 'safebox__visited';
 
 const Info = () => {
-  const [open, setOpen] = useState(() => localStorage.getItem(ALREADY_VISITED_KEY) === null);
+  const [open, setOpen] = useState<boolean>(() => localStorage.getItem(ALREADY_VISITED_KEY) === null);
 
   const okButtonRef = useRef(null);
 
@@ -16,17 +16,15 @@ const Info = () => {
 
   return (
     <>
-      <div className="absolute top-2 right-2">
-        <button
-          type="button"
-          className="w-6 h-6 text-green-600"
-          aria-label="What's Safebox?"
-          aria-hidden="true"
-          onClick={() => setOpen(true)}
-        >
-          <QuestionMarkCircleIcon />
-        </button>
-      </div>
+      <button
+        type="button"
+        className="w-6 h-6 text-green-600"
+        aria-label="What's Safebox?"
+        aria-hidden="true"
+        onClick={() => setOpen(true)}
+      >
+        <QuestionMarkCircleIcon />
+      </button>
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={okButtonRef} onClose={() => {}}>
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">

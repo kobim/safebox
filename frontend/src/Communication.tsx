@@ -1,13 +1,16 @@
-import React, { SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { SetStateAction, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import useWebSocket from 'react-use-websocket';
 
 import type { Exchange, SubjectRole } from './bindings';
 import { getExchange, saveExchange } from './api';
 import { cryptoKeysFrom, getKey, importPublicKey, deriveKey } from './crypto';
 import { b64decode } from './utils';
 
+import { LiveUpdatesContext } from './LiveUpdates';
 import ShareExchange from './ShareExchange';
 import AcceptExchange from './AcceptExchange';
+import DisplayExchange from './DisplayExchange';
 
 interface WindowParams {
   uuid: string;
@@ -72,7 +75,7 @@ const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange }) => {
     if (exchange) {
       setupKey(exchange);
     }
-  }, [role, exchange]);
+  }, [exchange]);
 
   const submit = useCallback(async () => {
     if (!derivedKey || !iv) {
@@ -88,11 +91,6 @@ const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange }) => {
     const { data } = await saveExchange(uuid, secondName, encryptedData);
     setExchange(data);
   }, [uuid, derivedKey, text, iv, secondName, setExchange]);
-
-  const submitDisabled = useMemo<boolean>(
-    () => text.length === 0 && exchange?.encMessage === undefined,
-    [text, exchange]
-  );
 
   if (exchange === undefined || !role) {
     return <div className="text-center">Loading exchange...</div>;
@@ -114,68 +112,7 @@ const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange }) => {
     return <ShareExchange name={exchange.first.name} />;
   }
 
-  if (role === 'first') {
-    return (
-      <>
-        <div className="flex sm:flex-row flex-col">
-          <div className="pr-2 space-y-2 relative h-36 sm:h-auto sm:flex-1">
-            <p>
-              Data received from <span className="font-semibold">{exchange.second.name}</span>
-            </p>
-            <p>
-              This exchange is named <span className="font-semibold">{exchange.first.name}</span>
-            </p>
-            <p className="text-sm">You can only read data.</p>
-            <p className="text-sm sm:absolute bottom-0">(refresh to check for updates)</p>
-          </div>
-          <div className="flex-1 flex flex-col">
-            <textarea
-              className="border border-gray-200 border-solid outline-none p-2 h-56 resize-none"
-              readOnly={true}
-              defaultValue={text}
-            ></textarea>
-          </div>
-        </div>
-        {text.length === 0 && <p className="text-sm text-right">No data yet</p>}
-      </>
-    );
-  }
-
-  return (
-    <>
-      <div className="flex sm:flex-row flex-col">
-        <div className="pr-2 space-y-2 relative h-36 sm:h-auto sm:flex-1">
-          <p>
-            Exchanging with <span className="font-semibold">{exchange.first.name}</span>
-          </p>
-          <p>
-            Your name is <span className="font-semibold">{exchange.second.name}</span>
-          </p>
-          <p className="text-sm sm:absolute bottom-0 pr-2">
-            You can write everything in the text box and it will be encrypted and sent once you click{' '}
-            <span className="italic">Save</span>.
-          </p>
-        </div>
-        <div className="flex-1 flex flex-col">
-          <textarea
-            onChange={e => setText(e.target.value)}
-            value={text}
-            className="border border-gray-200 border-solid focus:border-green-500 outline-none p-2 h-56 resize-none"
-          ></textarea>
-        </div>
-      </div>
-      <div className="text-right">
-        <button
-          type="submit"
-          onClick={submit}
-          disabled={submitDisabled}
-          className="font-medium text-green-600 hover:text-green-500 disabled:text-gray-300"
-        >
-          Save
-        </button>
-      </div>
-    </>
-  );
+  return <DisplayExchange exchange={exchange} text={text} setText={setText} submit={submit} role={role} />;
 };
 
 interface Params {
@@ -188,6 +125,20 @@ const Communication: React.FC<RouteComponentProps<Params>> = ({
   },
 }) => {
   const [exchange, setExchange] = useState<Exchange | null | undefined>(undefined);
+  const { enabled: updatesEnabled } = useContext(LiveUpdatesContext);
+
+  const updatesUrl = useMemo<string | null>(() => {
+    if (!updatesEnabled) {
+      return null;
+    }
+    const protocol = window.location.protocol.replace('http', 'ws');
+    return `${protocol}//${window.location.host}/api/m/${uuid}/ws`;
+  }, [uuid, updatesEnabled]);
+
+  useWebSocket(updatesUrl, {
+    onMessage: ({ data }) => setExchange(JSON.parse(data)),
+  });
+
   useEffect(() => {
     if (uuid) {
       getExchange(uuid).then(({ data }) => setExchange(data));

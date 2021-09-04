@@ -4,6 +4,7 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import { newExchange } from './api';
 import { destroy as destroyAll } from './store';
 
+import { LiveUpdatesProvider } from './LiveUpdates';
 import Main from './Main';
 import Communication from './Communication';
 import Header from './Header';
@@ -24,7 +25,7 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <LiveUpdatesProvider>
       <Header />
       <main className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
         <Switch>
@@ -33,7 +34,7 @@ const App = () => {
         </Switch>
       </main>
       <Footer />
-    </>
+    </LiveUpdatesProvider>
   );
 };
 

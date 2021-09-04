@@ -1,18 +1,16 @@
 import { Router } from 'itty-router';
 import { v4 as uuidv4 } from 'uuid';
 
-import type {
-  Exchange,
-  FixedRequest,
-  SavedExchange,
-  Subject,
-} from './bindings';
+import { decodeSecondAuth } from './utils';
+export { Sync } from './sync';
 
 const router = Router();
 
 const MAX_RETRIES = 5;
 
-const findAvailableKey = async (): Promise<string | null> => {
+const findAvailableKey = async (
+  MESSAGES: KVNamespace,
+): Promise<string | null> => {
   for (let i = 0; i < MAX_RETRIES; i++) {
     const key = uuidv4();
     const existing = await MESSAGES.get(key);
@@ -21,18 +19,18 @@ const findAvailableKey = async (): Promise<string | null> => {
     }
   }
 
-  return '';
+  return null;
 };
 
-router.post('/api/new', async () => {
-  const key = await findAvailableKey();
+router.post('/api/new', async (_, { MESSAGES }: Env) => {
+  const key = await findAvailableKey(MESSAGES);
   if (!key) {
     return new Response('No available key', { status: 500 });
   }
   return new Response(key, { status: 201 });
 });
 
-router.put('/api/m/:uuid/init', async (request: FixedRequest) => {
+router.put('/api/m/:uuid/init', async (request: Request, { MESSAGES }: Env) => {
   const first = (await request.json()) as Subject;
   if (first.key === null || first.name === null) {
     return new Response('Invalid first', { status: 422 });
@@ -50,7 +48,7 @@ router.put('/api/m/:uuid/init', async (request: FixedRequest) => {
   return new Response(value);
 });
 
-router.get('/api/m/:uuid', async (request) => {
+router.get('/api/m/:uuid', async (request: Request, { MESSAGES }: Env) => {
   // TODO: auth based get
   const { uuid } = request.params as { uuid: string };
   const value = await MESSAGES.get<SavedExchange>(uuid, {
@@ -73,67 +71,84 @@ router.get('/api/m/:uuid', async (request) => {
   );
 });
 
-const b64decode = (s: string): Uint8Array =>
-  Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+router.patch(
+  '/api/m/:uuid',
+  async (request: Request, { MESSAGES, SYNCS }: Env) => {
+    const { uuid } = request.params;
+    const current = await MESSAGES.get<Exchange>(uuid, { type: 'json' });
+    if (!current) {
+      return new Response('Not found.', { status: 404 });
+    }
 
-const decodeSecondAuth = ({ headers }: { headers: Headers }): string | null => {
-  const value = headers.get('authorization');
-  if (!value) {
-    return null;
-  }
+    const value = (await request.json()) as Exchange;
 
-  const [user, pass] = new TextDecoder()
-    .decode(b64decode(value.split(' ')[1]))
-    .split(':');
-  if (user !== 'second') {
-    return null;
-  }
-  return pass;
-};
+    const secondName = decodeSecondAuth(request);
 
-router.patch('/api/m/:uuid', async (request: FixedRequest) => {
-  const { uuid } = request.params;
-  const current = await MESSAGES.get<Exchange>(uuid, { type: 'json' });
-  if (!current) {
-    return new Response('Not found.', { status: 404 });
-  }
+    const newValue: SavedExchange = {
+      first: current.first,
+      second: current.second,
+      iv: current.iv,
 
-  const value = (await request.json()) as Exchange;
+      encMessage: value.encMessage || undefined,
+    };
 
-  const secondName = decodeSecondAuth(request);
+    if (current.second && current.second.name !== secondName) {
+      return new Response("Error - can't reclaim", { status: 400 });
+    }
+    if (!current.second && value.second) {
+      newValue['second'] = value.second;
+      newValue['iv'] = value.iv;
+    }
 
-  const newValue: SavedExchange = {
-    first: current.first,
-    second: current.second,
-    iv: current.iv,
+    await MESSAGES.put(uuid, JSON.stringify(newValue));
 
-    encMessage: value.encMessage || undefined,
-  };
+    const syncId = SYNCS.idFromName(uuid);
+    const sync = await SYNCS.get(syncId);
 
-  if (current.second && current.second.name !== secondName) {
-    return new Response("Error - can't reclaim", { status: 400 });
-  }
-  if (!current.second && value.second) {
-    newValue['second'] = value.second;
-    newValue['iv'] = value.iv;
-  }
-
-  await MESSAGES.put(uuid, JSON.stringify(newValue));
-  return new Response(
-    JSON.stringify({
+    const valueWithUuid = JSON.stringify({
       ...newValue,
       uuid,
-    }),
-    {
+    });
+
+    await sync.fetch(
+      new Request(request, {
+        body: valueWithUuid,
+      }),
+    );
+
+    return new Response(valueWithUuid, {
       headers: {
         'Content-Type': 'application/json',
       },
-    },
-  );
-});
+    });
+  },
+);
+
+router.get(
+  '/api/m/:uuid/ws',
+  async (request: Request, { MESSAGES, SYNCS }: Env) => {
+    const { uuid } = request.params;
+    if (MESSAGES.get(uuid) === null) {
+      return new Response('Not found.', { status: 404 });
+    }
+
+    const syncId = SYNCS.idFromName(uuid);
+    const sync = await SYNCS.get(syncId);
+
+    if (request.headers.get('Upgrade') != 'websocket') {
+      return new Response('expected websocket', { status: 400 });
+    }
+
+    const updatesUrl = new URL(request.url);
+    updatesUrl.pathname = '/ws';
+
+    return await sync.fetch(updatesUrl.href);
+  },
+);
 
 router.all('*', () => new Response('Not Found.', { status: 404 }));
 
-addEventListener('fetch', (event) =>
-  event.respondWith(router.handle(event.request)),
-);
+export default {
+  fetch: async (request: Request, env: Env): Promise<Response> =>
+    router.handle(request, env),
+};
