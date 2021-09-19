@@ -62,10 +62,10 @@
   resolved "https://registry.yarnpkg.com/@iarna/toml/-/toml-2.2.5.tgz#b32366c89b43c6f8cefbdefac778b9c828e3ba8c"
   integrity sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==
 
-"@mrbbot/node-fetch@^4.5.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@mrbbot/node-fetch/-/node-fetch-4.5.0.tgz#3b0e184cf4f22781f9de1950fa3b57be7fff7cb8"
-  integrity sha512-EuFTbohMH/dzWXy4PRTM/bn1fqmOkyiCHfXzioA9lYV/xRAnUKjIvaRiA0h4YQ6ZSPvgTGzvZi7O+Ro66xDN5A==
+"@mrbbot/node-fetch@^4.6.0":
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/@mrbbot/node-fetch/-/node-fetch-4.6.0.tgz#82c273b8e6b5d7846dfec0ed331007801ac49fff"
+  integrity sha512-GTSOdhpiUnJ9a+XK90NUiqCqOmqXOUU4tqg8WbpZW+nEUTJ4dF3QZ4xhfWg5bqYPagIh/e9r5HxGrftzmulbmw==
   dependencies:
     "@cloudflare/workers-types" "^2.2.2"
     busboy "^0.3.1"
@@ -1061,13 +1061,13 @@ mime-types@2.1.29:
   dependencies:
     mime-db "1.46.0"
 
-miniflare@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/miniflare/-/miniflare-1.4.0.tgz#305c5a675e41fc3f015fc920bb87ac1b50d789c1"
-  integrity sha512-jmxwA/+E8dGb80+AJyjgb6isT2ojIk852Jl1qpacDpIAkWOPKoq1VshxLtiMsotheoAuZKQCQQrjJnTMOrAFiw==
+miniflare@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/miniflare/-/miniflare-1.4.1.tgz#96f13652350a36cdc633ed61232df023cd095ffc"
+  integrity sha512-hJkMbTEM+sSiAo2yuPOucrdFYINLU7vvl9uVkRzAQ/h0CjmkYOCoyBn4jYzWtDZeQ0XrkyS6PGUCO277B5TsXA==
   dependencies:
     "@iarna/toml" "^2.2.5"
-    "@mrbbot/node-fetch" "^4.5.0"
+    "@mrbbot/node-fetch" "^4.6.0"
     "@peculiar/webcrypto" "^1.1.4"
     chokidar "^3.5.1"
     cjstoesm "^1.1.4"
