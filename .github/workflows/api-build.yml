@@ -1,14 +1,14 @@
-name: API Deploy
+name: API Build
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Build & Deploy
+    name: Verify build
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -16,8 +16,5 @@ jobs:
           node-version: '14'
       - name: Install dependencies
         run: yarn --cwd api install
-      - name: Deploy to Cloudflare Workers with Wrangler
-        uses: cloudflare/wrangler-action@1.3.0
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          workingDirectory: api
+      - name: Build
+        run: yarn --cwd api build
