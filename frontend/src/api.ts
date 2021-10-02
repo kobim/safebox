@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-import type { Exchange, Subject } from './bindings';
+import type { Exchange, SavedExchange, Subject } from './bindings';
 import { generateKey } from './crypto';
 import { b64encode } from './utils';
 
@@ -20,12 +20,12 @@ export const newExchange = async (): Promise<string> => {
 export const getExchange = async (uuid: string) => axios.get<Exchange>(`/api/m/${uuid}`);
 
 export const acceptExchange = async (uuid: string, subject: Subject, ivBytes: Uint8Array) =>
-  axios.patch<Exchange>(
+  axios.patch<Partial<SavedExchange>, AxiosResponse<Exchange>>(
     `/api/m/${uuid}`,
     {
       second: subject,
       iv: b64encode(ivBytes),
-    } as Partial<Exchange>,
+    } as Partial<SavedExchange>,
     {
       auth: {
         username: 'second',
@@ -35,7 +35,7 @@ export const acceptExchange = async (uuid: string, subject: Subject, ivBytes: Ui
   );
 
 export const saveExchange = async (uuid: string, subjectName: string, encryptedBytes: Uint8Array) =>
-  axios.patch(
+  axios.patch<Partial<Exchange>, AxiosResponse<Exchange>>(
     `/api/m/${uuid}`,
     {
       encMessage: b64encode(new Uint8Array(encryptedBytes)),
