@@ -5,7 +5,7 @@ import { generateKey } from './crypto';
 import { b64encode } from './utils';
 
 export const newExchange = async (): Promise<string> => {
-  const { data: uuid } = await axios.post('/api/new');
+  const { data: uuid } = await axios.post<string>('/api/new');
 
   const { publicKey: key, name } = await generateKey(uuid, 'first');
 
