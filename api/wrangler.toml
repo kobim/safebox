@@ -6,6 +6,7 @@ kv_namespaces = [
 zone_id = "da5e767f499758c8f050b3f4decfe23a"
 workers_dev = false
 route = "*safebox.dev/api/*"
+compatibility_date = "2021-10-22"
 
 [build]
 command = "yarn build"
