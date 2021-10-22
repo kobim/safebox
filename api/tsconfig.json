@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "target": "esnext",
+    "target": "es2020",
     "lib": [
-      "esnext",
-      "webworker"
+      "ES2020"
     ],
+    "module": "CommonJS",
     "alwaysStrict": true,
     "strict": true,
     "preserveConstEnums": true,
