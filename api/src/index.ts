@@ -38,7 +38,7 @@ router.put('/api/m/:uuid/init', async (request: Request, { MESSAGES }: Env) => {
 
   const { uuid } = request.params as { uuid: string };
 
-  const existing = await MESSAGES.get<Exchange>(uuid);
+  const existing = await MESSAGES.get(uuid);
   if (existing) {
     return new Response('Already initialized', { status: 400 });
   }
