@@ -1,5 +1,5 @@
 import React, { SetStateAction, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import type { Exchange, Subject } from './bindings';
 import { acceptExchange } from './api';
@@ -12,7 +12,7 @@ interface Params {
 }
 
 const AcceptExchange: React.FC<Params> = ({ uuid, name, setExchange }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const accept = useCallback(async () => {
     const { publicKey: key, name } = await generateKey(uuid, 'second');
@@ -29,8 +29,8 @@ const AcceptExchange: React.FC<Params> = ({ uuid, name, setExchange }) => {
   }, [uuid, setExchange]);
 
   const decline = useCallback(() => {
-    history.push('/');
-  }, [history]);
+    navigate('/');
+  }, [navigate]);
 
   return (
     <>

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import { newExchange } from './api';
 import { destroy as destroyAll } from './store';
@@ -11,13 +11,13 @@ import Header from './Header';
 import Footer from './Footer';
 
 const App = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const createNewExchange = useCallback(async () => {
     const uuid = await newExchange();
 
-    history.push(`/m/${uuid}`);
-  }, [history]);
+    navigate(`/m/${uuid}`);
+  }, [navigate]);
 
   const destroy = useCallback(async () => {
     await destroyAll();
@@ -28,10 +28,10 @@ const App = () => {
     <LiveUpdatesProvider>
       <Header />
       <main className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-        <Switch>
-          <Route path="/m/:uuid" component={Communication} />
-          <Route path="/" render={() => <Main newExchange={createNewExchange} destroy={destroy} />} />
-        </Switch>
+        <Routes>
+          <Route path="/m/:uuid" element={<Communication />} />
+          <Route path="/" element={<Main newExchange={createNewExchange} destroy={destroy} />} />
+        </Routes>
       </main>
       <Footer />
     </LiveUpdatesProvider>

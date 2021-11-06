@@ -1,5 +1,5 @@
 import React, { SetStateAction, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 
 import type { Exchange, SubjectRole } from './bindings';
@@ -125,20 +125,13 @@ const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange, updatedLi
   );
 };
 
-interface Params {
-  uuid: string;
-}
-
-const Communication: React.FC<RouteComponentProps<Params>> = ({
-  match: {
-    params: { uuid },
-  },
-}) => {
+const Communication: React.FC = () => {
   const [exchange, setExchange] = useState<Exchange | null | undefined>(undefined);
   const { enabled: updatesEnabled } = useContext(LiveUpdatesContext);
+  const { uuid } = useParams();
 
   const updatesUrl = useMemo<string | null>(() => {
-    if (!updatesEnabled) {
+    if (!updatesEnabled || !uuid) {
       return null;
     }
     const protocol = window.location.protocol.replace('http', 'ws');
@@ -154,6 +147,10 @@ const Communication: React.FC<RouteComponentProps<Params>> = ({
       getExchange(uuid).then(({ data }) => setExchange(data));
     }
   }, [uuid, updatesEnabled]); // also refresh when updates are toggled
+
+  if (!uuid) {
+    return null;
+  }
 
   return (
     <div className="bg-white sm:mx-auto sm:shadow-md p-4 sm:max-w-2xl w-full h-full">
