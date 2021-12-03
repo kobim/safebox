@@ -8,7 +8,7 @@
   "scripts": {
     "build": "esbuild --bundle --sourcemap --outdir=dist --format=esm --out-extension:.js=.mjs ./src/index.js",
     "start": "miniflare --watch --debug --do SYNCS=Sync",
-    "format": "prettier --write  '*.{json,js}' 'src/**/*.{js,ts}'",
+    "format": "prettier --write '*.{json,js}' 'src/**/*.{js,ts}'",
     "lint": "eslint --max-warnings=0 src && prettier --check '*.{json,js}' 'src/**/*.{js,ts}'"
   },
   "eslintConfig": {
