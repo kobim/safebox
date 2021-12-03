@@ -1,0 +1,16 @@
+{
+  "name": "@safebox/durable_objects",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "module": "./src/downloadCounter.mjs",
+  "scripts": {
+    "build": "esbuild --bundle --sourcemap --outdir=dist --format=esm --out-extension:.js=.mjs ./src/sync.js",
+    "publish": "npm run build && npx wrangler publish"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^3.2.0",
+    "@cloudflare/wrangler": "^1.19.5",
+    "esbuild": "^0.14.1"
+  }
+}

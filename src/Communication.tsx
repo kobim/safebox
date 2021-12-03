@@ -1,8 +1,14 @@
-import React, { SetStateAction, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, {
+  SetStateAction,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 
-import type { Exchange, SubjectRole } from './bindings';
 import { getExchange, saveExchange } from './api';
 import { cryptoKeysFrom, getKey, importPublicKey, deriveKey } from './crypto';
 import { b64decode } from './utils';
@@ -19,7 +25,12 @@ interface WindowParams {
   updatedLive: boolean;
 }
 
-const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange, updatedLive }) => {
+const Window: React.FC<WindowParams> = ({
+  uuid,
+  exchange,
+  setExchange,
+  updatedLive,
+}) => {
   const [text, setText] = useState<string>('');
   const [role, setRole] = useState<SubjectRole | null | undefined>(undefined);
 
@@ -45,7 +56,11 @@ const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange, updatedLi
       }
 
       const secondKey = await getKey(exchange.uuid, 'second');
-      if (newRole === 'second' && exchange.second && exchange.second.name !== secondKey?.name) {
+      if (
+        newRole === 'second' &&
+        exchange.second &&
+        exchange.second.name !== secondKey?.name
+      ) {
         newRole = null;
       }
       if (secondKey) {
@@ -67,7 +82,7 @@ const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange, updatedLi
           const decrypted = await window.crypto.subtle.decrypt(
             { name: 'AES-GCM', iv },
             derivedKey,
-            b64decode(exchange.encMessage)
+            b64decode(exchange.encMessage),
           );
           setText(new TextDecoder().decode(decrypted));
         }
@@ -84,7 +99,11 @@ const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange, updatedLi
     }
 
     const encodedText = new TextEncoder().encode(text);
-    let encryptedData = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv }, derivedKey, encodedText);
+    let encryptedData = await window.crypto.subtle.encrypt(
+      { name: 'AES-GCM', iv },
+      derivedKey,
+      encodedText,
+    );
     if (text.length === 0) {
       encryptedData = '';
     }
@@ -106,7 +125,13 @@ const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange, updatedLi
   }
 
   if (role === 'second' && !exchange.second) {
-    return <AcceptExchange uuid={uuid} name={exchange.first.name} setExchange={setExchange} />;
+    return (
+      <AcceptExchange
+        uuid={uuid}
+        name={exchange.first.name}
+        setExchange={setExchange}
+      />
+    );
   }
 
   if (exchange.second === undefined) {
@@ -126,7 +151,9 @@ const Window: React.FC<WindowParams> = ({ uuid, exchange, setExchange, updatedLi
 };
 
 const Communication: React.FC = () => {
-  const [exchange, setExchange] = useState<Exchange | null | undefined>(undefined);
+  const [exchange, setExchange] = useState<Exchange | null | undefined>(
+    undefined,
+  );
   const { enabled: updatesEnabled } = useContext(LiveUpdatesContext);
   const { uuid } = useParams();
 

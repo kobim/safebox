@@ -16,7 +16,7 @@ export class Sync implements DurableObject {
   async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname.endsWith('/ws')) {
-      if (request.headers.get('Upgrade') != 'websocket') {
+      if (request.headers.get('Upgrade') !== 'websocket') {
         return new Response('expected websocket', { status: 400 });
       }
 
@@ -40,6 +40,7 @@ export class Sync implements DurableObject {
       ended: false,
     };
 
+    // @ts-ignore
     ws.accept();
 
     this.sessions.push(session);

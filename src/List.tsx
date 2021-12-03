@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import type { SubjectRole } from './bindings';
 import { getStore } from './store';
 
 type Params = {
@@ -23,7 +22,10 @@ const List = ({ title, role }: Params) => {
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th scope="col" className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th
+              scope="col"
+              className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
               {title}
             </th>
           </tr>

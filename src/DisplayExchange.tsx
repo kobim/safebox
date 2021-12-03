@@ -1,7 +1,5 @@
 import React, { SetStateAction, useMemo } from 'react';
 
-import { Exchange, SubjectRole } from './bindings';
-
 interface Params {
   exchange: Exchange;
   role: SubjectRole;
@@ -11,10 +9,17 @@ interface Params {
   updatedLive: boolean;
 }
 
-const DisplayExchange: React.FC<Params> = ({ role, exchange, text, setText, submit, updatedLive }) => {
+const DisplayExchange: React.FC<Params> = ({
+  role,
+  exchange,
+  text,
+  setText,
+  submit,
+  updatedLive,
+}) => {
   const submitDisabled = useMemo<boolean>(
     () => text.length === 0 && exchange?.encMessage === undefined,
-    [text, exchange]
+    [text, exchange],
   );
 
   return role === 'first' ? (
@@ -22,10 +27,12 @@ const DisplayExchange: React.FC<Params> = ({ role, exchange, text, setText, subm
       <div className="flex sm:flex-row flex-col">
         <div className="pr-2 space-y-2 relative h-36 sm:h-auto sm:flex-1">
           <p>
-            Data received from <span className="font-semibold">{exchange.second?.name}</span>
+            Data received from{' '}
+            <span className="font-semibold">{exchange.second?.name}</span>
           </p>
           <p>
-            This exchange is named <span className="font-semibold">{exchange.first.name}</span>
+            This exchange is named{' '}
+            <span className="font-semibold">{exchange.first.name}</span>
           </p>
           <p className="text-sm">You can only read data.</p>
           <p className="text-sm sm:absolute bottom-0">
@@ -47,19 +54,21 @@ const DisplayExchange: React.FC<Params> = ({ role, exchange, text, setText, subm
       <div className="flex sm:flex-row flex-col">
         <div className="pr-2 space-y-2 relative h-36 sm:h-auto sm:flex-1">
           <p>
-            Exchanging with <span className="font-semibold">{exchange.first.name}</span>
+            Exchanging with{' '}
+            <span className="font-semibold">{exchange.first.name}</span>
           </p>
           <p>
-            Your name is <span className="font-semibold">{exchange.second?.name}</span>
+            Your name is{' '}
+            <span className="font-semibold">{exchange.second?.name}</span>
           </p>
           <p className="text-sm sm:absolute bottom-0 pr-2">
-            You can write everything in the text box and it will be encrypted and sent once you click{' '}
-            <span className="italic">Save</span>.
+            You can write everything in the text box and it will be encrypted
+            and sent once you click <span className="italic">Save</span>.
           </p>
         </div>
         <div className="flex-1 flex flex-col">
           <textarea
-            onChange={e => setText(e.target.value)}
+            onChange={(e) => setText(e.target.value)}
             value={text}
             className="border border-gray-200 border-solid focus:border-green-500 outline-none p-2 h-56 resize-none"
           ></textarea>

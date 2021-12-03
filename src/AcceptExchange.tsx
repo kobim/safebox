@@ -1,7 +1,6 @@
 import React, { SetStateAction, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import type { Exchange, Subject } from './bindings';
 import { acceptExchange } from './api';
 import { generateKey } from './crypto';
 

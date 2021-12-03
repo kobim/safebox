@@ -5,10 +5,19 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#13a821" />
-    <meta name="description" content="A safe way to receive sensitive information from anyone on the web" />
+    <meta
+      name="description"
+      content="A safe way to receive sensitive information from anyone on the web"
+    />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Safebox</title>
+    <script>
+      // Hack to disable Fast Refresh as WebSockets aren't currently supported.
+      class WebSocket {
+        constructor() {}
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

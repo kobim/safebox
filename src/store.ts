@@ -1,5 +1,4 @@
 import { createStore, get, set, entries, clear } from 'idb-keyval';
-import type { SubjectRole } from './bindings';
 
 type SavedKey = {
   name: string;
