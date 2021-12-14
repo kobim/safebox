@@ -3599,10 +3599,10 @@ cosmiconfig@^7, cosmiconfig@^7.0.0, cosmiconfig@^7.0.1:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-craco-esbuild@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/craco-esbuild/-/craco-esbuild-0.4.2.tgz#397c9bff896a0984b0b478888d85e17e548e2c05"
-  integrity sha512-j43UhZqVv1GuwQYAfWgPd7TvP3M8QGMP8C/zewtQ7oQVK/e5nLx2JiE8xWtMPiCmAtDux6IWD38S8NcLm/orPw==
+craco-esbuild@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/craco-esbuild/-/craco-esbuild-0.4.3.tgz#ca4e2a2b790181ed8e96fc3c637ee3dcb4b0098f"
+  integrity sha512-aDc74IMPBhtRvfRXGujlTgclkGZ3gJ09kMMqFHTRmgLBv0tbP1n3swRL9ZjMWhXW/5Lk4SG8nJS7UjDNUhSRRw==
   dependencies:
     "@svgr/webpack" "^5.5.0"
     esbuild-jest "0.5.0"
