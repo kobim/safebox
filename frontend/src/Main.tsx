@@ -39,7 +39,7 @@ const Main: React.FC<Params> = ({ newExchange, destroy }) => (
         </p>
       </div>
     </div>
-    <div className="sm:border-l border-gray-100 px-4 py-5 sm:px-6 sm:flex flex-grow border-t-8 sm:border-t-0">
+    <div className="sm:border-l border-gray-100 px-4 py-5 sm:px-6 sm:flex grow border-t-8 sm:border-t-0">
       <div className="sm:w-1/2 sm:mr-2">
         <List role="first" title="Exchanges created" />
       </div>
