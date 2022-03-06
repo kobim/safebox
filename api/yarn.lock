@@ -987,10 +987,10 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
-itty-router@^2.4.10:
-  version "2.4.10"
-  resolved "https://registry.yarnpkg.com/itty-router/-/itty-router-2.4.10.tgz#23c7e44e36784e106f71ae6b1ec0fd4b95c70978"
-  integrity sha512-6z8UO4MoJRCdgLRVU++L6QTHJwU2pCAYFM8+9HjjcneRM5DqYyF5g6tsgIw24xXLFJlpvVrIzVzhjn862ZQZcQ==
+itty-router@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/itty-router/-/itty-router-2.5.2.tgz#296e2db945e8f75a47fa9ffe16eecb30a6551a77"
+  integrity sha512-igVdp/qoMe7aMnwB1eI9OCgV9HGyQlQ9LBDWPMSDkoYv7SpcxZp0t86noQcXKCSVK2B7y7z8d5SiaNbRMLUIyg==
 
 js-tokens@^4.0.0:
   version "4.0.0"
