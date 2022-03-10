@@ -6,7 +6,7 @@
   "dependencies": {
     "@headlessui/react": "^1.5.0",
     "@heroicons/react": "^1.0.6",
-    "axios": "^0.26.0",
+    "axios": "^0.26.1",
     "idb-keyval": "^6.1.0",
     "qrcode.react": "^2.0.0",
     "react": "^17.0.2",
